@@ -36,7 +36,7 @@ def synchronize(ns_class: ec.NotSynchronizedExperiment, initial_t, final_t, n_po
         concentration.append(new_y[i] * ns_class.inlet_pressure / (
                 (new_temperature[i]) * gas_cte))
         f_out.append(concentration[i] * flow_qls[i])
-
+    print('flowqls: ' + str(flow_qls))
     sClass = ec.SynchronizedExperiment(
         ns_class.experiment_name,
         ns_class.inlet_pressure,

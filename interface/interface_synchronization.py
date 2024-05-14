@@ -59,7 +59,7 @@ row_input_in2 = ft.Row(controls=[inputQ_in, inputy_in], spacing=25)
 column_input_in = ft.Column(controls=[label_row_in, row_input_in1, container_espaco_in, row_input_in2], spacing=5)
 container_in = ft.Container(content=column_input_in)
 inputP_in.value = "1"
-inputT_in.value = "297.15"
+inputT_in.value = "298.15"
 inputQ_in.value = "0.008333"
 inputy_in.value = "0.6"
 
@@ -371,7 +371,7 @@ def __validate_input_value__(inputsclasses: [], page):
     for i in range(len(inputsclasses)):
         inputs[i].update()
         inputsclasses[i].value = inputs[i].value
-        print(inputsclasses[i].value)
+
         if inputsclasses[i].value == '':
             msg_erro = msg_erro + 'O valor inserido para ' + inputsclasses[i].name + ' não pode ser vazio\n'
         else:
@@ -380,11 +380,11 @@ def __validate_input_value__(inputsclasses: [], page):
                 if float_input < 0:
                     msg_erro = msg_erro + 'O valor inserido para ' + inputsclasses[i].name + ' não pode ser negativo\n'
             except ValueError:
-                print(inputsclasses[i].value)
+
                 msg_erro = msg_erro + 'O valor inserido para ' + inputsclasses[i].name + ' deve ser numérico\n'
-    print(msg_erro)
+
     if msg_erro == '':
-        print("Entrei no if de erro")
+
         pross = True
     else:
         dlg_modal.content = ft.Text(msg_erro)
@@ -446,7 +446,9 @@ def __sincronizar_dados__(
         vetorCol.controls.insert(i + 1, ft.Row(vetorLinha, alignment=ft.MainAxisAlignment.START))
 
     intFoutCH4 = 0
+    print(sync_experiment.f_out_column)
 
+    print(sync_experiment.c_out_column)
     for i in range(1, len(sync_experiment.time_column)):
         intFoutCH4 += (((sync_experiment.f_out_column[i] + sync_experiment.f_out_column[i - 1]) / 2) * (
                     sync_experiment.time_column[i] - sync_experiment.time_column[i - 1]))
@@ -458,7 +460,7 @@ def __sincronizar_dados__(
     Qin = sync_experiment.inlet_flow  # L/s
     CinCH4 = sync_experiment.inlet_pressure * sync_experiment.inlet_y / (
                 Gascte * sync_experiment.inlet_temperature)  # mol/L
-
+    print(intFoutCH4)
     qch4 = (CinCH4 * Qin * (
             sync_experiment.time_column[len(sync_experiment.time_column) - 1] - sync_experiment.time_column[
         0]) - intFoutCH4 - CinCH4 * Vbed * epsilonL) / mads

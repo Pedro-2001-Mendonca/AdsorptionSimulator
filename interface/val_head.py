@@ -59,6 +59,14 @@ inlet_temp = ft.TextField(label="Temperatura", height=input_height,
 inlet_pres = ft.TextField(label="Pressão", height=input_height,
                           cursor_height=input_cursor_height, width=input_width, value="1")
 
+qmax_comp1.value = 7.01816
+k1_comp1.value = 0.193684
+k2_comp1.value = 2110.02
+n_comp1.value = 0.81529
+qmax_comp2.value = 10.1845
+k1_comp2.value = 3046.335
+k2_comp2.value = 7491.086
+n_comp2.value = 0.261344
 
 def __onchange(coluna, row0, row):
     coluna.controls[2].visible = True
@@ -239,8 +247,8 @@ def __btn_calcular__(principal, row0, row):
         if str(row.controls[0].value) == "Monocomponente":
             beq1 = float(k1_comp1.value) * math.exp(float(k2_comp1.value) *
                                                     (1 / float(inlet_temp.value) - 1 / float(temp_ref)))
-            upper1 = (beq1 * float(inlet_pres.value)) ** (1/float(ns_comp1.value))
-            under1 = (beq1 * float(inlet_pres.value)) ** (1/float(ns_comp1.value))
+            upper1 = (beq1 * float(inlet_pres.value)*0.6) ** (1/float(ns_comp1.value))
+            under1 = (beq1 * float(inlet_pres.value)*0.6) ** (1/float(ns_comp1.value))
             resultado.append(float(qmax_comp1.value) * upper1 / (1 + under1))
         if str(row.controls[0].value) == "Binário":
             partial_pressure = float(inlet_pres.value)
@@ -248,16 +256,38 @@ def __btn_calcular__(principal, row0, row):
                                                     (1 / float(inlet_temp.value) - 1 / float(temp_ref)))
             beq2 = float(k1_comp2.value) * math.exp(float(k2_comp2.value) *
                                                     (1 / float(inlet_temp.value) - 1 / float(temp_ref)))
-            valor1 = (beq1 * partial_pressure) ** (1/float(ns_comp1.value))
-            valor2 = (beq2 * partial_pressure) ** (1/float(ns_comp2.value))
+            valor1 = (beq1 * partial_pressure*0.6) ** (1/float(ns_comp1.value))
+            valor2 = (beq2 * partial_pressure*0.4) ** (1/float(ns_comp2.value))
             resultado.append(float(qmax_comp1.value) * valor1 / (1 + valor1 + valor2))
             resultado.append(float(qmax_comp2.value) * valor2 / (1 + valor1 + valor2))
-            print(beq1)
-            print(beq2)
-            print(valor1)
-            print(valor2)
+
         if str(row.controls[0].value) == "Ternário":
             resultado = []
+
+    if str(row0.controls[0].value) == "Toth":
+
+
+
+        if str(row.controls[0].value) == "Monocomponente":
+            beq1 = float(k1_comp1.value) * math.exp(float(k2_comp1.value) *
+                                                    (1 / float(inlet_temp.value) - 1 / float(temp_ref)))
+            upper1 = (beq1 * float(inlet_pres.value) * 0.6) ** (1 / float(ns_comp1.value))
+            under1 = (beq1 * float(inlet_pres.value) * 0.6) ** (1 / float(ns_comp1.value))
+            resultado.append(float(qmax_comp1.value) * upper1 / (1 + under1))
+
+        if str(row.controls[0].value) == "Binário":
+            partial_pressure1 = float(inlet_pres.value) * 0.6
+            partial_pressure2 = float(inlet_pres.value) * 0.4
+            beq1 = float(k1_comp1.value) * math.exp(float(k2_comp1.value) *
+                                                    (1 / float(inlet_temp.value) - 1 / float(temp_ref)))
+            beq2 = float(k1_comp2.value) * math.exp(float(k2_comp2.value) *
+                                                    (1 / float(inlet_temp.value) - 1 / float(temp_ref)))
+            upper1 = beq1 * partial_pressure1
+            upper2 = beq2 * partial_pressure2
+            valor1 = (beq1 * partial_pressure1) ** (float(n_comp1.value))
+            valor2 = (beq2 * partial_pressure2) ** (float(n_comp2.value))
+            resultado.append(float(qmax_comp1.value) * upper1 / ((1 + valor1 + valor2) ** (1 / float(n_comp1.value))))
+            resultado.append(float(qmax_comp2.value) * upper2 / ((1 + valor1 + valor2) ** (1 / float(n_comp2.value))))
 
     print(resultado)
     return resultado
