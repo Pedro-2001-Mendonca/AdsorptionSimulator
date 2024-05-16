@@ -59,14 +59,14 @@ inlet_temp = ft.TextField(label="Temperatura", height=input_height,
 inlet_pres = ft.TextField(label="Pressão", height=input_height,
                           cursor_height=input_cursor_height, width=input_width, value="1")
 
-qmax_comp1.value = 7.01816
-k1_comp1.value = 0.193684
-k2_comp1.value = 2110.02
-n_comp1.value = 0.81529
-qmax_comp2.value = 10.1845
-k1_comp2.value = 3046.335
-k2_comp2.value = 7491.086
-n_comp2.value = 0.261344
+#qmax_comp1.value = 7.01816
+#k1_comp1.value = 0.193684
+#k2_comp1.value = 2110.02
+#n_comp1.value = 0.81529
+#qmax_comp2.value = 10.1845
+#k1_comp2.value = 3046.335
+#k2_comp2.value = 7491.086
+#n_comp2.value = 0.261344
 
 def __onchange(coluna, row0, row):
     coluna.controls[2].visible = True
